@@ -9,6 +9,24 @@ export default new Router({
       path:'/',
       name:'blogmain',
       component:()=>import('@/view/blogmain/blogmain')
+    },
+    {
+      path:'/Article/:id',
+      name:'Article',
+      component:()=>import('@/view/article/article')
     }
-  ]
+  ],
+  scrollBehavior (to, from, savedPosition) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if(savedPosition){
+          resolve(savedPosition);
+        }else{
+          resolve({ x: 0, y: 0 });
+        }
+      },300)
+    })
+  }
 })
+
+

@@ -6,9 +6,9 @@
           <li v-for="item in guide.guideList" :key="item" :class="{guide_hover:guide.guideIndex==item,guide_active:guide.guideActiveIndex==item}" @mouseover="GuideHover" @click="GuideActive" @mouseout="GuideHoverOut">{{item}}</li>
         </ul>
       </div>
-      <div class="box">
-          <router-view/>
-      </div>
+        <transition name="router">
+            <router-view/>
+        </transition>
   </div>
 </template>
 

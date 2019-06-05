@@ -1,3 +1,11 @@
+.box{
+    width: 85%;
+    height:auto;
+    min-height: 1000px;
+    right: 0px;
+    background-color: #eeeeee;
+    position: absolute;
+}
 .search{
     width: 50px;
     height:50px;
@@ -51,6 +59,7 @@
     margin: auto;
     position: relative;
     margin-bottom: 50px;
+    margin-top: 90px;
 }
 .bolg_list li{
     width: 100%;
@@ -60,19 +69,19 @@
     border-radius: 15px;
     margin-top: 40px;
     transition: all .5s;
-    box-sizing: border-box;
     overflow: hidden;
     position: relative;
-    transition: all .5s;
-    display: inline-block;
 }
 .bolg_hover{
     transform: scale(1.02);
     box-shadow: 1px 1px 8px rgb(200,200,200);
 }
+.bolg_click{
+    transform: translateX(150px);
+}
 .bolgList-enter,.bolgList-leave-to{
     opacity: 0;
-    transform: translateX(30px);
+    transform:translateY(-30px);
 }
 .list_img_box{
     width: 300px;
