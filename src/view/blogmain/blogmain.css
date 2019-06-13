@@ -72,12 +72,12 @@
     overflow: hidden;
     position: relative;
 }
-.bolg_hover{
+.bolg_list li:hover{
     transform: scale(1.02);
     box-shadow: 1px 1px 8px rgb(200,200,200);
 }
 .bolg_click{
-    transform: translateX(150px);
+    transform: translateX(150px) !important;
 }
 .bolgList-enter,.bolgList-leave-to{
     opacity: 0;
@@ -152,4 +152,10 @@
 .list_record span{
     margin-left: 30px;
     color: rgb(153,153,153);
+}
+.page{
+    width: 1050px;
+    margin: auto;
+    height:50px;
+    margin-bottom: 50px;
 }

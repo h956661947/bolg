@@ -19,9 +19,7 @@
         v-for="(item,index) in BolgList" 
         :key="item.id" 
         :hid="item.id" 
-        :class="{bolg_hover:bolg.bolgListHover==item.id,bolg_click:bolg.bolgListClick==item.id}" 
-        @mouseover="BolgHover" 
-        @mouseout="BolgHoverOut"
+        :class="{bolg_click:bolg.bolgListClick==item.id}" 
         @mousedown="BolgDown"
         @mouseup="BolgUp"
         :data-index="index"
@@ -37,7 +35,7 @@
                         <Tag v-for="tag in item.tags" :color="$store.state.tag[tag]" :key="tag">{{tag}}</Tag>
                     </div>
                 </div>
-                <p class="list_content" v-html="$options.filters.FontFilter(item.content)"></p>
+                <p class="list_content">{{text(item.content) | FontFilter}}</p>
                 <div class="list_record">
                     <span style="margin-left: 0px;"><Icon type="md-eye" size="15"/>&nbsp;&nbsp;&nbsp;{{item.readNum}}</span>
                     <span><Icon type="md-heart" size="15"/>&nbsp;&nbsp;&nbsp;{{item.loveNum}}</span>
@@ -47,9 +45,14 @@
             </div>
         </li>
     </transition-group>
+    <div class="page">
+        <Page :total="page.dataNum" show-total :current="page.nowPage" :page-size="page.pageNum" @on-change="PageChange"/>
+    </div>
+    
 </div>
 </template>
 <script>
+import { GetArticle,GetArticleNum } from '@/api/articlelist'
 export default {
     data(){
         return {
@@ -59,26 +62,24 @@ export default {
                 searchData:[]
             },
             bolg:{
-                bolgListHover:'',
                 bolgListClick:''
             },
+            page:{
+                dataNum:500,
+                nowPage:1,
+                pageNum:10
+            }
         }
     },
     methods: {
-        BolgHover(el){
-            this.bolg.bolgListHover=el.currentTarget.getAttribute('hid');
-        },
-        BolgHoverOut(){
-            this.bolg.bolgListHover='';
-        },
         BolgDown(el){
             
             this.bolg.bolgListClick=el.currentTarget.getAttribute('hid');
-            console.log(this.bolg.bolgListClick);
             // this.$router.push('/Article/'+el.currentTarget.getAttribute('hid'));
         },
         BolgUp(el){
             this.$router.push('/Article/'+el.currentTarget.getAttribute('hid'));
+            this.bolg.bolgListClick=''
         },
         SearchHover(){
             this.search.searchOpen=true;
@@ -89,6 +90,21 @@ export default {
         handleSearch(){
 
         },
+        PageChange(index){
+            GetArticle((index-1)*this.page.pageNum,this.page.pageNum).then((data)=>{
+                window.scrollTo(0,0);
+                this.$store.commit('bolgList',data.data);
+            });
+            
+        },
+        text(str){
+            str = str.replace(/<\/?[^>]*>/g, ''); //去除HTML tag
+            str = str.replace(/[ | ]*\n/g, '\n'); //去除行尾空白
+            str = str.replace(/\n[\s| | ]*\r/g,'\n'); //去除多余空行
+            str = str.replace(/&nbsp;/ig, ''); //去掉&nbsp;
+            str = str.replace(/\s/g, ''); //将空格去掉
+            return str;
+        }
 
     },
     computed:{
@@ -108,9 +124,18 @@ export default {
     },
     filters:{
         FontFilter(val){
-            return val.substr(1,220)+'...'
+            return val.substr(0,200)+'...'
         }
-    }
+    },
+    created() {
+        //获取列表
+        GetArticle(0,10).then((data)=>{
+            this.$store.commit('bolgList',data.data);
+        });
+        GetArticleNum().then((data)=>{
+            this.page.dataNum=data.data[0]['count(*)'];
+        })
+    },
 }
 </script>
 <style>

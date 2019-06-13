@@ -8,12 +8,15 @@ export default new Router({
     {
       path:'/',
       name:'blogmain',
-      component:()=>import('@/view/blogmain/blogmain')
+      component:()=>import('@/view/blogmain/blogmain'),
+      meta:{
+        keepAlive:true
+      }
     },
     {
       path:'/Article/:id',
       name:'Article',
-      component:()=>import('@/view/article/article')
+      component:()=>import('@/view/article/article'),
     }
   ],
   scrollBehavior (to, from, savedPosition) {
