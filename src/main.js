@@ -12,6 +12,8 @@ import 'iview/dist/styles/fonts/ionicons.ttf'
 import 'iview/dist/styles/fonts/ionicons.woff'
 import 'iview/dist/styles/iview.css'
 
+import { GetArticle } from '@/api/articlelist'
+
 Vue.config.productionTip = false
 Vue.use(iview);
 
@@ -39,6 +41,24 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach(route => {
   iview.LoadingBar.finish();
+  if(store.state.bolg.bolgList.length==0)
+  {
+    //路由过来后加载数据
+    //session保存当前翻页的页数
+    if(sessionStorage.getItem('nowPage'))
+    {
+      let nowPage=sessionStorage.getItem('nowPage');
+      GetArticle((nowPage-1)*10,10).then((data)=>{
+        store.commit('bolgList',data.data);
+      })
+    }else{
+      GetArticle(0,10).then((data)=>{
+        store.commit('bolgList',data.data);
+      })
+    }
+  }else{
+    //已经请求到了数据
+  }
 });
 
 

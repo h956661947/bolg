@@ -94,6 +94,7 @@ export default {
             GetArticle((index-1)*this.page.pageNum,this.page.pageNum).then((data)=>{
                 window.scrollTo(0,0);
                 this.$store.commit('bolgList',data.data);
+                sessionStorage.setItem('nowPage',index);
             });
             
         },
@@ -129,9 +130,9 @@ export default {
     },
     created() {
         //获取列表
-        GetArticle(0,10).then((data)=>{
-            this.$store.commit('bolgList',data.data);
-        });
+        // GetArticle(0,10).then((data)=>{
+        //     this.$store.commit('bolgList',data.data);
+        // });
         GetArticleNum().then((data)=>{
             this.page.dataNum=data.data[0]['count(*)'];
         })

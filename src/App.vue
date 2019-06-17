@@ -9,6 +9,10 @@
       </div>
     </transition>
       <div class="guide">
+        <div class="head">
+          <img src="" alt="" class="head_img">
+          <p class="head_name">MONTAGNE 的博客</p>
+        </div> 
         <ul class="guide_list">
           <li v-for="item in guide.guideList" :key="item" :class="{guide_hover:guide.guideIndex==item,guide_active:guide.guideActiveIndex==item}" @mouseover="GuideHover" @click="GuideActive" @mouseout="GuideHoverOut">{{item}}</li>
         </ul>
@@ -31,7 +35,7 @@ export default {
   data(){
     return {
       guide:{
-        guideList:['文章','关于','作品'],
+        guideList:['文章'],
         guideIndex:'',
         guideActiveIndex:'文章'
       }
